@@ -11,10 +11,7 @@ POST '/action' {
 
 {
     action: {
-        type: 'treat',
-        metadata: {
-            city: 'city_name'
-        }
+        type: 'treat'
     }
 }
 
