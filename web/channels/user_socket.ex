@@ -2,11 +2,11 @@ defmodule Pandemic.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", Pandemic.RoomChannel
+  channel "game", Pandemic.GameChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
-  # transport :longpoll, Phoenix.Transports.LongPoll
+  transport :longpoll, Phoenix.Transports.LongPoll
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -33,5 +33,6 @@ defmodule Pandemic.UserSocket do
   #     Pandemic.Endpoint.broadcast("users_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
+
   def id(_socket), do: nil
 end

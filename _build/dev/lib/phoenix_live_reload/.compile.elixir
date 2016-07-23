@@ -1,0 +1,23 @@
+v2.
+{<<"/Users/deangalvin/Projects/pandemic-server/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReloader.Socket.beam">>,
+ 'Elixir.Phoenix.LiveReloader.Socket',module,
+ <<"lib/phoenix_live_reload/socket.ex">>,
+ ['Elixir.Phoenix.Transports.WebSocket','Elixir.Phoenix.Transports.LongPoll',
+  'Elixir.Phoenix.Socket','Elixir.Phoenix','Elixir.Module','Elixir.Kernel'],
+ [],[],nil}.
+{<<"/Users/deangalvin/Projects/pandemic-server/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReload.Channel.beam">>,
+ 'Elixir.Phoenix.LiveReload.Channel',module,
+ <<"lib/phoenix_live_reload/channel.ex">>,
+ ['Elixir.Phoenix.Channel','Elixir.Logger','Elixir.Phoenix.Socket',
+  'Elixir.Module','Elixir.Kernel'],
+ ['Elixir.Enum','Elixir.Path','Elixir.Application',erlang,
+  'Elixir.String.Chars','Elixir.String',fs,'Elixir.Access'],
+ [],nil}.
+{<<"/Users/deangalvin/Projects/pandemic-server/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReloader.beam">>,
+ 'Elixir.Phoenix.LiveReloader',module,
+ <<"lib/phoenix_live_reload/live_reloader.ex">>,
+ ['Elixir.Application','Elixir.Plug.Conn','Elixir.Module','Elixir.Plug',
+  'Elixir.File','Elixir.Kernel'],
+ ['Elixir.Enum','Elixir.Map',erlang,'Elixir.String.Chars','Elixir.String',
+  'Elixir.Access'],
+ [],nil}.

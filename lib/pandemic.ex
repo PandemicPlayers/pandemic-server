@@ -18,6 +18,7 @@ defmodule Pandemic do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Pandemic.Supervisor]
     Supervisor.start_link(children, opts)
+    Pandemic.Board.start_link
   end
 
   # Tell Phoenix to update the endpoint configuration
