@@ -1,4 +1,6 @@
 Pandemic Responses
+
+Now with websockets!
 ```ruby
 POST '/action' {
     action: {
