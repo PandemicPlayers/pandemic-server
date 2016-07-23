@@ -1,6 +1,10 @@
 Pandemic Responses
 
 Now with websockets!
+
+```
+'game:action' {type: 'move', city: 'city_name'}
+```
 ```ruby
 POST '/action' {
     action: {
