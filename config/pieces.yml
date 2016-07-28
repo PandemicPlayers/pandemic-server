@@ -1,0 +1,37 @@
+cities:
+  new_york:
+    color: blue
+    connections: [montreal, washington, london, madrid]
+  london:
+    color: blue
+    connections: [new_york, essen, paris, madrid]
+  montreal:
+    color: blue
+    connections: [new_york, washington, chicago]
+  washington:
+    color: blue
+    connections: [atlanta, montreal, new_york, miami]
+  paris:
+    color: blue
+    connections: [london, essen, milan, algiers, madrid]
+  milan:
+    color: blue
+    connections: [paris, essen, istanbul]
+  atlanta:
+    color: blue
+    connections: [chicago, montreal, washington, miami]
+  chicago:
+    color: blue
+    connections: [san_francisco, los_angles, mexico_city, atlanta, montreal]
+  san_francisco:
+    color: blue
+    connections: [tokyo, manila, chicago, los_angles]
+  essen:
+    color: blue
+    connections: [london, paris, milan, st_petersburg]
+  st_petersburg:
+    color: blue
+    connections: [essen, istanbul, moscow]
+  madrid:
+    color: blue
+    connections: [new_york, london, paris, sao_paulo]

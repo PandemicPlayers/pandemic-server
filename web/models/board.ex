@@ -4,7 +4,7 @@ defmodule Pandemic.Board do
     Agent.start_link(fn -> %{
       board: %{
         state: "not_started",
-        cities: cities,
+        cities: Pandemic.City.generate_cities,
         players: %{},
         current_turn: %{
           player_index: 0,
@@ -22,41 +22,43 @@ defmodule Pandemic.Board do
   end
 
   def state do
-    Agent.get(my_pid, &(&1))
+    current_state = Agent.get(my_pid, &(&1))
+    cities = for {k, v} <- current_state[:board][:cities], into: %{}, do: {k, Pandemic.City.state(k)}
+    players = for {k, v} <- current_state[:board][:players], into: %{}, do: {k, Pandemic.Player.state(k)}
+    current_state = put_in(current_state, [:board, :cities], cities)
+    Map.update(current_state, :board, %{}, &(%{&1 |
+       cities: cities,
+       players: players
+    }))
   end
 
   def add_player(nickname) do
     check_game_not_started
-    Agent.update(my_pid, &(put_in(&1, [:board, :players, nickname], %{current_city: "new_york"})))
+    Agent.update(my_pid, &(put_in(&1, [:board, :players, nickname],
+       Pandemic.Player.start_link(nickname, "atlanta")
+    )))
   end
 
   def start_game do
     check_player_count
     check_game_not_started
-    Agent.update(my_pid, &(put_in(&1, [:board, :state], "playing")))
     player_list = Map.keys(state[:board][:players])
     Agent.update(my_pid, &(put_in(&1, [:board, :player_list], player_list)))
     decrement_actions
+    Agent.update(my_pid, &(put_in(&1, [:board, :state], "playing")))
   end
 
   def move_player(nickname, city) do
     check_game_started
     check_current_player(nickname)
-    cur_state = state
-    if !Enum.member?(cur_state[:board][:cities][cur_state[:board][:players][nickname][:current_city]][:connections], city) do
-      raise "Movement Error"
-    end
-    Agent.update(my_pid, &(put_in(&1, [:board, :players, nickname, :current_city], city)))
+    Pandemic.Player.move(nickname, city)
     decrement_actions
   end
 
   def treat(nickname) do
     check_game_started
     check_current_player(nickname)
-    current_city = state[:board][:players][nickname][:current_city]
-    check_cubes_on_city(current_city)
-    infection_count = state[:board][:cities][current_city][:infection_count]
-    Agent.update(my_pid, &(put_in(&1, [:board, :cities, current_city, :infection_count], infection_count - 1)))
+    Pandemic.City.treat(state[:board][:players][nickname][:current_city])
     decrement_actions
   end
 
@@ -79,15 +81,12 @@ defmodule Pandemic.Board do
     end
   end
 
-  def check_game_started do
-    if (state[:board][:state] == "not_started") do
-      raise "Not Started"
-    end
-  end
-
   def check_player_count do
     if (Enum.count(Map.keys(state[:board][:players])) < 2) do
       raise "Not enough players"
+    end
+    if (Enum.count(Map.keys(state[:board][:players])) < 4) do
+      raise "Too many players"
     end
   end
 
@@ -97,9 +96,9 @@ defmodule Pandemic.Board do
     end
   end
 
-  def check_cubes_on_city(city) do
-    if state[:board][:cities][city][:infection_count] < 1 do
-      raise "No infections in city"
+  def check_game_started do
+    if (state[:board][:state] == "not_started") do
+      raise "Not Started"
     end
   end
 
@@ -112,76 +111,6 @@ defmodule Pandemic.Board do
   end
 
   def update_cities do
-    Agent.update(my_pid, &(put_in(&1, [:board, :cities], cities)))
-  end
-
-  def cities do
-    %{
-      "new_york" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["montreal", "washington", "london", "madrid"]
-      },
-      "london" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["new_york", "essen", "paris", "madrid"]
-      },
-      "montreal" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["new_york", "washington", "chicago"]
-      },
-      "washington" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["atlanta", "montreal", "new_york", "miami"]
-      },
-      "paris" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["london", "essen", "milan", "algiers", "madrid"]
-      },
-      "milan" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["paris", "essen", "istanbul"]
-      },
-      "atlanta" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["chicago", "montreal", "washington", "miami"]
-      },
-      "chicago" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["san_francisco", "los_angles", "mexico_city", "atlanta", "montreal"]
-      },
-      "san_francisco" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["tokyo", "manila", "chicago", "los_angles"]
-      },
-      "essen" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["london", "paris", "milan", "st_petersburg"]
-      },
-      "st_petersburg" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["essen", "istanbul", "moscow"]
-      },
-      "madrid" => %{
-        color: "blue",
-        infection_count: 3,
-        connections: ["new_york", "london", "paris", "sao_paulo"]
-      },
-      "miami" => %{
-        color: "yellow",
-        infection_count: 3,
-        connections: ["atlanta", "washington", "mexico_city", "bogota"]
-      }
-    }
+    Agent.update(my_pid, &(put_in(&1, [:board, :cities], Pandemic.City.generate_cities)))
   end
 end

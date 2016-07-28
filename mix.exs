@@ -17,7 +17,7 @@ defmodule Pandemic.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Pandemic, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :yamerl]]
   end
 
   # Specifies which paths to compile per environment.
@@ -33,6 +33,9 @@ defmodule Pandemic.Mixfile do
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:yamerl, "~> 0.3.2"},
+     {:yaml_elixir, "~> 1.2.0"},
+   ]
   end
 end
